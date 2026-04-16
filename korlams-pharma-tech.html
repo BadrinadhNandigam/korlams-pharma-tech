@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Korlam's Pharma Tech | Free Study Notes for Pharmacy Students</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --teal:       #1a6b74;
+    --teal-dark:  #134f57;
+    --teal-light: #e8f4f6;
+    --gold:       #e0a825;
+    --gold-light: #fdf6e3;
+    --accent:     #e05c3a;
+    --text:       #1e2a2e;
+    --muted:      #607178;
+    --border:     #d6e4e7;
+    --white:      #ffffff;
+    --bg:         #f7fbfc;
+    --sidebar-w:  240px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); font-size: 15px; line-height: 1.6; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--teal-dark);
+    color: #cde8eb;
+    font-size: 12px;
+    padding: 5px 24px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    background: var(--white);
+    border-bottom: 2px solid var(--teal-light);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(26,107,116,.08);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: linear-gradient(135deg,var(--teal),var(--teal-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .brand-text h1 { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--teal-dark); line-height: 1.2; }
+  .brand-text p  { font-size: 11px; color: var(--muted); }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; margin-left: auto; }
+  .nav-links a {
+    text-decoration: none; color: var(--text); font-size: 13.5px; font-weight: 500;
+    padding: 6px 12px; border-radius: 6px; transition: .18s;
+  }
+  .nav-links a:hover, .nav-links a.active { background: var(--teal-light); color: var(--teal-dark); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #2e9eaa 100%);
+    color: var(--white);
+    text-align: center;
+    padding: 56px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .hero h2 { font-family: 'Playfair Display', serif; font-size: clamp(26px,4vw,40px); font-weight: 700; margin-bottom: 12px; position: relative; }
+  .hero p  { font-size: 15px; opacity: .88; max-width: 520px; margin: 0 auto 28px; position: relative; }
+  .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; position: relative; }
+  .badge {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    backdrop-filter: blur(4px);
+    padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 500;
+  }
+
+  /* ── SEARCH ── */
+  .search-bar {
+    background: var(--white);
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 10px;
+  }
+  .search-bar input {
+    flex: 1; padding: 10px 16px; border: 1.5px solid var(--border);
+    border-radius: 8px; font-family: inherit; font-size: 14px; outline: none;
+    transition: border-color .2s;
+  }
+  .search-bar input:focus { border-color: var(--teal); }
+  .search-bar button {
+    background: var(--teal); color: var(--white); border: none;
+    padding: 10px 22px; border-radius: 8px; font-family: inherit;
+    font-size: 14px; font-weight: 600; cursor: pointer; transition: .2s;
+  }
+  .search-bar button:hover { background: var(--teal-dark); }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; min-height: calc(100vh - 200px); }
+
+  /* ── SIDEBAR ── */
+  aside {
+    width: var(--sidebar-w);
+    flex-shrink: 0;
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 73px;
+    height: calc(100vh - 73px);
+    overflow-y: auto;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-heading {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+    color: var(--white); background: var(--teal);
+    padding: 8px 16px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .sidebar-heading .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+  .sidebar-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 16px 9px 20px;
+    font-size: 13.5px; color: var(--text);
+    text-decoration: none; cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: .15s;
+  }
+  .sidebar-link:hover { background: var(--teal-light); color: var(--teal-dark); border-left-color: var(--teal); }
+  .sidebar-link.active { background: var(--teal-light); color: var(--teal-dark); border-left-color: var(--teal); font-weight: 600; }
+  .sidebar-link .dot-sm { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .study-tip { font-size: 12.5px; padding: 7px 16px 7px 20px; color: var(--muted); }
+
+  /* ── MAIN ── */
+  main { flex: 1; padding: 28px 32px; max-width: 900px; }
+
+  /* breadcrumb */
+  .breadcrumb { font-size: 12.5px; color: var(--muted); margin-bottom: 18px; }
+  .breadcrumb a { color: var(--teal); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+
+  /* page title */
+  .page-title { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .page-title h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--teal-dark); }
+  .page-subtitle { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
+  .topic-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .tag {
+    background: var(--teal-light); color: var(--teal-dark);
+    border: 1px solid #bcd8dc; font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px;
+  }
+
+  /* tab bar */
+  .tab-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin-bottom: 28px; flex-wrap: wrap; }
+  .tab {
+    padding: 9px 18px; font-size: 13.5px; font-weight: 500;
+    cursor: pointer; border-radius: 6px 6px 0 0;
+    color: var(--muted); border: none; background: none;
+    border-bottom: 2px solid transparent; margin-bottom: -2px;
+    font-family: inherit; transition: .15s;
+  }
+  .tab:hover { color: var(--teal); background: var(--teal-light); }
+  .tab.active { color: var(--teal-dark); background: var(--teal-light); border-bottom-color: var(--teal); font-weight: 600; }
+
+  /* tab content */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* section headings */
+  .section-h {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; color: var(--teal-dark);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+  }
+  .section-h .icon { font-size: 22px; }
+
+  /* boxes */
+  .box { border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; }
+  .box-core    { background: #e8f4f6; border: 1px solid #bcd8dc; }
+  .box-def     { background: #f3effe; border: 1px solid #c9baf0; }
+  .box-example { background: #f0faf2; border: 1px solid #a8d8b0; border-left: 4px solid #3db55e; }
+  .box-warning { background: #fff8e8; border: 1px solid #f0d080; border-left: 4px solid var(--gold); }
+  .box-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .box-core  .box-label { color: #1a7a85; }
+  .box-def   .box-label { color: #6b3fc9; }
+  .box-example .box-label { color: #2a8c44; }
+  .box-warning .box-label { color: #a07820; }
+
+  /* table */
+  .data-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13.5px; }
+  .data-table th {
+    background: var(--teal-dark); color: var(--white);
+    padding: 10px 14px; text-align: left; font-weight: 600;
+  }
+  .data-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+  .data-table tr:nth-child(even) td { background: var(--teal-light); }
+  .data-table tr:hover td { background: #d4eef1; }
+
+  /* section divider */
+  .sec-divider { font-size: 16px; font-weight: 700; color: var(--teal-dark); margin: 24px 0 12px; border-left: 4px solid var(--gold); padding-left: 10px; }
+
+  /* bullet list */
+  .styled-list { list-style: none; padding: 0; margin-bottom: 18px; }
+  .styled-list li { padding: 6px 0 6px 20px; position: relative; font-size: 14px; }
+  .styled-list li::before { content: '▸'; position: absolute; left: 0; color: var(--teal); font-size: 12px; top: 8px; }
+  .styled-list li strong { color: var(--teal-dark); }
+
+  /* footer */
+  footer {
+    background: var(--teal-dark); color: #cde8eb;
+    text-align: center; padding: 28px 24px;
+    font-size: 13px; line-height: 1.8;
+  }
+  footer strong { color: var(--white); font-size: 15px; }
+  footer .footer-note { font-size: 11.5px; opacity: .7; margin-top: 6px; }
+
+  /* responsive */
+  @media (max-width: 700px) {
+    aside { display: none; }
+    main  { padding: 20px 16px; }
+    .topbar { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>🧪 Korlam's Pharma Tech | Free Study Notes for Pharmacy Students</span>
+  <span>Last updated: 2024 | B.Pharm | M.Pharm</span>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="brand" href="#">
+    <div class="brand-icon">🧬</div>
+    <div class="brand-text">
+      <h1>Korlam's Pharma Tech</h1>
+      <p>Your complete guide to Pharmaceutical Technology</p>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="#">🏠 Home</a>
+    <a href="#" class="active">Pre-formulation</a>
+    <a href="#">Tablets</a>
+    <a href="#">Capsules</a>
+    <a href="#">Solutions</a>
+    <a href="#">Sterile</a>
+    <a href="#">Stability</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <h2>Pharmaceutical Technology — Made Simple 🚀</h2>
+  <p>All your pharma tech notes in one place — clear concepts, easy language, exam-ready summaries. No confusion, just understanding!</p>
+  <div class="hero-badges">
+    <span class="badge">✅ Easy Language</span>
+    <span class="badge">📘 Concept-Based</span>
+    <span class="badge">🎯 Exam-Focused</span>
+    <span class="badge">🔬 Examples Included</span>
+    <span class="badge">📊 Comparison Tables</span>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="🔍 Search topics… e.g. 'granulation', 'tablet coating', 'preformulation'…" />
+  <button onclick="doSearch()">Search</button>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside>
+    <div class="sidebar-section">
+      <div class="sidebar-heading"><span class="dot"></span> ALL TOPICS</div>
+      <a class="sidebar-link" href="#" onclick="setPage('home')">🏠 Home / Overview</a>
+      <a class="sidebar-link active" href="#" onclick="setPage('preform')">📋 Pre-formulation Studies</a>
+      <a class="sidebar-link" href="#" onclick="setPage('tablet')">💊 Tablet Formulation</a>
+      <a class="sidebar-link" href="#" onclick="setPage('capsule')">💊 Capsule Formulation</a>
+      <a class="sidebar-link" href="#" onclick="setPage('solutions')">🧪 Solutions &amp; Suspensions</a>
+      <a class="sidebar-link" href="#" onclick="setPage('sterile')">💉 Sterile Products</a>
+      <a class="sidebar-link" href="#" onclick="setPage('stability')">📈 Stability Testing</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading"><span class="dot"></span> QUICK CONCEPTS</div>
+      <a class="sidebar-link" href="#">Granulation Methods</a>
+      <a class="sidebar-link" href="#">Tablet Coating</a>
+      <a class="sidebar-link" href="#">Solubility</a>
+      <a class="sidebar-link" href="#">Sterilization Methods</a>
+      <a class="sidebar-link" href="#">ICH Guidelines</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading"><span class="dot"></span> 💡 STUDY TIPS</div>
+      <div class="study-tip">🟡 Use yellow boxes for memory</div>
+      <div class="study-tip">🔵 Blue boxes = key concepts</div>
+      <div class="study-tip">🟢 Green boxes = examples</div>
+      <div class="study-tip">🟣 Purple boxes = definitions</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="mainContent">
+
+    <!-- PRE-FORMULATION PAGE -->
+    <div id="page-preform" class="page">
+      <div class="breadcrumb">🏠 <a href="#">Home</a> → Pre-formulation Studies</div>
+      <div class="page-title"><span style="font-size:28px">🔬</span><h2>Pre-formulation Studies</h2></div>
+      <p class="page-subtitle">The first step in drug development — understanding the drug's properties <strong>BEFORE</strong> formulating it</p>
+      <div class="topic-tags">
+        <span class="tag">B.Pharm 4th Sem</span>
+        <span class="tag">M.Pharm</span>
+        <span class="tag">Important for Exams</span>
+      </div>
+
+      <!-- TABS -->
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchTab(this,'solubility')">💧 Solubility</button>
+        <button class="tab" onclick="switchTab(this,'dissolution')">🌀 Dissolution</button>
+        <button class="tab" onclick="switchTab(this,'polymorphism')">🔷 Polymorphism</button>
+        <button class="tab" onclick="switchTab(this,'stability')">📈 Stability</button>
+        <button class="tab" onclick="switchTab(this,'particle')">🔵 Particle Size</button>
+        <button class="tab" onclick="switchTab(this,'pka')">⚗️ pKa &amp; pH</button>
+      </div>
+
+      <!-- SOLUBILITY TAB -->
+      <div id="tab-solubility" class="tab-panel active">
+        <div class="section-h"><span class="icon">💧</span> Solubility — The Foundation of Drug Development</div>
+
+        <div class="box box-core">
+          <div class="box-label">💙 CORE CONCEPT</div>
+          Solubility is simply "how well a drug dissolves in water or other solvents." If a drug doesn't dissolve, it won't absorb into the body — no matter how good the drug is. This is why solubility is the #1 property we study first!
+        </div>
+
+        <div class="box box-def">
+          <div class="box-label">🟣 Definition</div>
+          Solubility is the maximum amount of drug (solute) that can dissolve in a given amount of solvent at a specific temperature to form a homogeneous solution.
+        </div>
+
+        <div class="sec-divider">USP Solubility Classification</div>
+        <table class="data-table">
+          <thead><tr><th>Term</th><th>Parts of Solvent per Part of Drug</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td>Very Soluble</td><td>Less than 1 part</td><td>Dissolves very easily</td></tr>
+            <tr><td>Freely Soluble</td><td>1 to 10 parts</td><td>Dissolves well</td></tr>
+            <tr><td>Soluble</td><td>10 to 30 parts</td><td>Normal solubility</td></tr>
+            <tr><td>Sparingly Soluble</td><td>30 to 100 parts</td><td>Somewhat difficult</td></tr>
+            <tr><td>Slightly Soluble</td><td>100 to 1000 parts</td><td>Difficult to dissolve</td></tr>
+            <tr><td>Very Slightly Soluble</td><td>1000 to 10,000 parts</td><td>Very difficult</td></tr>
+            <tr><td>Practically Insoluble</td><td>More than 10,000 parts</td><td>Doesn't dissolve</td></tr>
+          </tbody>
+        </table>
+
+        <div class="box box-example">
+          <div class="box-label">🟢 REAL EXAMPLE</div>
+          Paracetamol — "Sparingly soluble" in water. That's why it takes some time to dissolve when you drop it in water! Aspirin is "Sparingly to slightly soluble" — this is why aspirin tablets can sometimes be hard on the stomach.
+        </div>
+
+        <div class="sec-divider">Methods to Improve Solubility</div>
+        <ul class="styled-list">
+          <li><strong>Micronization</strong> — Reduce particle size to increase surface area → more contact with solvent → faster dissolving</li>
+          <li><strong>Solid Dispersions</strong> — Mix poorly soluble drug with water-soluble carrier (like PEG, PVP)</li>
+          <li><strong>Salt Formation</strong> — Convert drug to its salt form (e.g., sodium salt) which is usually more soluble</li>
+          <li><strong>Co-solvents</strong> — Add ethanol, propylene glycol to help drug dissolve</li>
+          <li><strong>Complexation</strong> — Form cyclodextrin complexes to improve aqueous solubility</li>
+          <li><strong>Nanosuspensions</strong> — Reduce drug to nano-size for dramatically improved dissolution</li>
+        </ul>
+      </div>
+
+      <!-- DISSOLUTION TAB -->
+      <div id="tab-dissolution" class="tab-panel">
+        <div class="section-h"><span class="icon">🌀</span> Dissolution — Drug Release from Dosage Form</div>
+        <div class="box box-core">
+          <div class="box-label">💙 CORE CONCEPT</div>
+          Dissolution is the process by which a solid drug dissolves into a liquid medium. It governs how fast the drug is absorbed. Even if solubility is good, slow dissolution = slow absorption!
+        </div>
+        <div class="sec-divider">Noyes–Whitney Equation</div>
+        <div class="box box-def">
+          <div class="box-label">🟣 Formula</div>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--teal-dark)">dC/dt = DA(Cs − C) / hV</span><br/><br/>
+          Where: <strong>D</strong> = diffusion coefficient, <strong>A</strong> = surface area, <strong>Cs</strong> = saturation solubility, <strong>C</strong> = concentration in bulk, <strong>h</strong> = diffusion layer thickness, <strong>V</strong> = volume of dissolution medium
+        </div>
+        <div class="sec-divider">Factors Affecting Dissolution</div>
+        <ul class="styled-list">
+          <li><strong>Particle size</strong> — Smaller particles → more surface area → faster dissolution</li>
+          <li><strong>Polymorphic form</strong> — Amorphous forms dissolve faster than crystalline</li>
+          <li><strong>Temperature</strong> — Higher temperature increases dissolution rate</li>
+          <li><strong>Viscosity of medium</strong> — Higher viscosity slows down dissolution</li>
+          <li><strong>pH of medium</strong> — Affects ionization, thus solubility and dissolution</li>
+        </ul>
+        <div class="box box-example">
+          <div class="box-label">🟢 REAL EXAMPLE</div>
+          Aspirin tablets crush faster in warm water than cold water — temperature increases dissolution rate!
+        </div>
+      </div>
+
+      <!-- POLYMORPHISM TAB -->
+      <div id="tab-polymorphism" class="tab-panel">
+        <div class="section-h"><span class="icon">🔷</span> Polymorphism — Same Drug, Different Crystal Forms</div>
+        <div class="box box-def">
+          <div class="box-label">🟣 Definition</div>
+          Polymorphism is the ability of a drug substance to exist in more than one crystalline form (polymorph), having the same chemical composition but different physical properties.
+        </div>
+        <div class="sec-divider">Types of Polymorphs</div>
+        <table class="data-table">
+          <thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Enantiotropic</td><td>One form converts to another reversibly at a specific temperature</td><td>Sulfur</td></tr>
+            <tr><td>Monotropic</td><td>One form is always more stable; conversion is irreversible</td><td>Carbamazepine</td></tr>
+            <tr><td>Amorphous</td><td>No crystal structure; highest energy, fastest dissolution</td><td>Amorphous indomethacin</td></tr>
+            <tr><td>Solvates/Hydrates</td><td>Solvent/water molecules incorporated in crystal lattice</td><td>Ampicillin trihydrate</td></tr>
+          </tbody>
+        </table>
+        <div class="box box-warning">
+          <div class="box-label">🟡 EXAM TIP</div>
+          Ritonavir (HIV drug) failed market because stable polymorph II appeared unexpectedly, reducing bioavailability. A classic pharma disaster caused by polymorphism!
+        </div>
+      </div>
+
+      <!-- STABILITY TAB -->
+      <div id="tab-stability" class="tab-panel">
+        <div class="section-h"><span class="icon">📈</span> Stability — Drug Shelf Life &amp; Degradation</div>
+        <div class="box box-core">
+          <div class="box-label">💙 CORE CONCEPT</div>
+          Stability studies ensure the drug remains safe, effective, and of acceptable quality throughout its shelf life. ICH Q1A guidelines define stability testing requirements worldwide.
+        </div>
+        <div class="sec-divider">ICH Stability Conditions</div>
+        <table class="data-table">
+          <thead><tr><th>Study Type</th><th>Temperature</th><th>Humidity</th><th>Duration</th></tr></thead>
+          <tbody>
+            <tr><td>Long-term</td><td>25°C ± 2°C</td><td>60% RH ± 5%</td><td>12 months minimum</td></tr>
+            <tr><td>Intermediate</td><td>30°C ± 2°C</td><td>65% RH ± 5%</td><td>6 months</td></tr>
+            <tr><td>Accelerated</td><td>40°C ± 2°C</td><td>75% RH ± 5%</td><td>6 months</td></tr>
+          </tbody>
+        </table>
+        <ul class="styled-list">
+          <li><strong>Hydrolysis</strong> — Water breaks drug bonds (esters, amides). Most common degradation route.</li>
+          <li><strong>Oxidation</strong> — Oxygen degrades drug. Use antioxidants like BHA, BHT.</li>
+          <li><strong>Photodegradation</strong> — Light breaks drug. Use amber containers.</li>
+          <li><strong>Thermal degradation</strong> — Heat causes decomposition. Store in cool conditions.</li>
+        </ul>
+      </div>
+
+      <!-- PARTICLE SIZE TAB -->
+      <div id="tab-particle" class="tab-panel">
+        <div class="section-h"><span class="icon">🔵</span> Particle Size — Critical Physical Property</div>
+        <div class="box box-core">
+          <div class="box-label">💙 CORE CONCEPT</div>
+          Particle size affects dissolution rate, bioavailability, flow properties, and content uniformity. Smaller particles = more surface area = faster dissolution!
+        </div>
+        <div class="sec-divider">Particle Size Reduction Methods</div>
+        <ul class="styled-list">
+          <li><strong>Micronization</strong> — Reduces particles to 1–10 µm using fluid energy mills. Used for poorly soluble drugs.</li>
+          <li><strong>Nanonization</strong> — Reduces to &lt;1 µm using wet media milling or high-pressure homogenization.</li>
+          <li><strong>Ball milling</strong> — Mechanical grinding using steel/ceramic balls.</li>
+          <li><strong>Hammer milling</strong> — High-speed rotating hammers break particles.</li>
+        </ul>
+        <div class="sec-divider">Particle Size Analysis Methods</div>
+        <table class="data-table">
+          <thead><tr><th>Method</th><th>Range</th><th>Principle</th></tr></thead>
+          <tbody>
+            <tr><td>Sieve Analysis</td><td>&gt;50 µm</td><td>Mechanical sieving through mesh screens</td></tr>
+            <tr><td>Laser Diffraction</td><td>0.1 – 3500 µm</td><td>Diffraction pattern of laser beam</td></tr>
+            <tr><td>Dynamic Light Scattering</td><td>1 nm – 10 µm</td><td>Brownian motion of particles</td></tr>
+            <tr><td>Microscopy</td><td>0.2 µm – 1 mm</td><td>Direct visual measurement</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- pKa TAB -->
+      <div id="tab-pka" class="tab-panel">
+        <div class="section-h"><span class="icon">⚗️</span> pKa &amp; pH — Ionization &amp; Absorption</div>
+        <div class="box box-def">
+          <div class="box-label">🟣 Definition</div>
+          pKa is the pH at which 50% of a drug exists in ionized form and 50% in unionized form. Unionized drugs absorb better through biological membranes.
+        </div>
+        <div class="sec-divider">Henderson–Hasselbalch Equation</div>
+        <div class="box box-core">
+          <div class="box-label">💙 For Weak Acids</div>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--teal-dark)">pH = pKa + log [A⁻]/[HA]</span>
+        </div>
+        <div class="box box-core">
+          <div class="box-label">💙 For Weak Bases</div>
+          <span style="font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--teal-dark)">pH = pKa + log [B]/[BH⁺]</span>
+        </div>
+        <div class="box box-example">
+          <div class="box-label">🟢 REAL EXAMPLE</div>
+          Aspirin (pKa 3.5) is a weak acid. In stomach (pH 1.5), it stays mostly unionized → good absorption in stomach. In intestine (pH 6.8), it ionizes more → reduced absorption. This is why aspirin works fastest on empty stomach!
+        </div>
+      </div>
+    </div><!-- /page-preform -->
+
+    <!-- SOLUTIONS PAGE -->
+    <div id="page-solutions" class="page" style="display:none">
+      <div class="breadcrumb">🏠 <a href="#">Home</a> → Solutions &amp; Suspensions</div>
+      <div class="page-title"><span style="font-size:28px">🧪</span><h2>Solutions &amp; Suspensions</h2></div>
+      <p class="page-subtitle">Liquid dosage forms — formulation, properties, and quality standards</p>
+      <div class="topic-tags">
+        <span class="tag">B.Pharm 4th Sem</span>
+        <span class="tag">M.Pharm</span>
+      </div>
+      <div class="sec-divider">Suspending Agents Used</div>
+      <ul class="styled-list">
+        <li><strong>Natural gums</strong> — Acacia, Tragacanth, Xanthan gum</li>
+        <li><strong>Synthetic polymers</strong> — CMC (Carboxymethylcellulose), HPMC</li>
+        <li><strong>Clays</strong> — Bentonite, Veegum (Magnesium aluminium silicate)</li>
+      </ul>
+      <div class="box box-example">
+        <div class="box-label">🟢 EXAMPLE</div>
+        Calamine Lotion = suspension of Calamine (zinc carbonate) and Zinc Oxide in aqueous medium with bentonite as suspending agent. Shake well before use — classic suspension!<br/><br/>
+        Antacid suspension (like Milk of Magnesia) contains Mg(OH)₂ particles suspended in water.
+      </div>
+      <div class="sec-divider">Ideal Properties of a Suspension</div>
+      <ul class="styled-list">
+        <li>Uniform distribution of particles on shaking</li>
+        <li>Settles slowly and is easily resuspended</li>
+        <li>Pourable consistency — not too viscous</li>
+        <li>Chemically stable and preservative-free or properly preserved</li>
+      </ul>
+    </div>
+
+    <!-- OTHER PAGES PLACEHOLDER -->
+    <div id="page-home"     class="page" style="display:none"><h2 style="font-family:'Playfair Display',serif;color:var(--teal-dark);margin-bottom:12px">🏠 Home / Overview</h2><p style="color:var(--muted)">Select a topic from the sidebar to get started!</p></div>
+    <div id="page-tablet"   class="page" style="display:none"><h2 style="font-family:'Playfair Display',serif;color:var(--teal-dark);margin-bottom:12px">💊 Tablet Formulation</h2><p style="color:var(--muted)">Content coming soon…</p></div>
+    <div id="page-capsule"  class="page" style="display:none"><h2 style="font-family:'Playfair Display',serif;color:var(--teal-dark);margin-bottom:12px">💊 Capsule Formulation</h2><p style="color:var(--muted)">Content coming soon…</p></div>
+    <div id="page-sterile"  class="page" style="display:none"><h2 style="font-family:'Playfair Display',serif;color:var(--teal-dark);margin-bottom:12px">💉 Sterile Products</h2><p style="color:var(--muted)">Content coming soon…</p></div>
+    <div id="page-stability" class="page" style="display:none"><h2 style="font-family:'Playfair Display',serif;color:var(--teal-dark);margin-bottom:12px">📈 Stability Testing</h2><p style="color:var(--muted)">Content coming soon…</p></div>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Korlam's Pharma Tech</strong> — Pharmaceutical Technology Notes for Pharmacy Students<br/>
+  Notes compiled from: Pharmaceutics by Aulton, Ansel's Pharmaceutical Dosage Forms, USP-NF, ICH Guidelines, BP, Lachman &amp; Lieberman<br/>
+  <div class="footer-note">For educational purposes only. Always refer to official pharmacopoeial standards for practice.</div>
+</footer>
+
+<script>
+  // Page navigation
+  function setPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    const el = document.getElementById('page-' + id);
+    if (el) el.style.display = 'block';
+
+    document.querySelectorAll('.sidebar-link').forEach(a => a.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return false;
+  }
+
+  // Tab switching
+  function switchTab(btn, tabId) {
+    const panels = document.querySelectorAll('.tab-panel');
+    panels.forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  // Search
+  function doSearch() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!q) return;
+    const keywords = {
+      solubility: 'preform', dissolution: 'preform', polymorphism: 'preform',
+      stability: 'preform', particle: 'preform', pka: 'preform', ph: 'preform',
+      suspension: 'solutions', solution: 'solutions', suspending: 'solutions',
+      tablet: 'tablet', capsule: 'capsule', sterile: 'sterile',
+    };
+    for (const [k, v] of Object.entries(keywords)) {
+      if (q.includes(k)) {
+        // simulate nav
+        document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+        const el = document.getElementById('page-' + v);
+        if (el) el.style.display = 'block';
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+        return;
+      }
+    }
+    alert('No results found for "' + q + '". Try: solubility, dissolution, suspension, tablet, etc.');
+  }
+  document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+</script>
+</body>
+</html>
